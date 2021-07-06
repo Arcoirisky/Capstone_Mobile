@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setPickerStore } from '@/store/profileSlice';
 import { fetchEvents, setStore, fetchNextEvents } from '@/store/eventSlice';
 import { fetchServices } from '@/store/servicesSlice';
-import { fetchKPIs } from '@/store/kpiSlice';
+// import { fetchKPIs } from '@/store/kpiSlice';
 
 export default function DropPicker() {
   const stores = useSelector((state) => state.profile.stores);
@@ -31,7 +31,7 @@ export default function DropPicker() {
   useEffect(() => {
     setLoading(true);
     if (loading) {
-      dispatch(fetchKPIs(pickerStore));
+      // dispatch(fetchKPIs(pickerStore));
       dispatch(fetchServices(pickerStore));
       dispatch(fetchEvents(pickerStore));
       dispatch(setStore(pickerStore));

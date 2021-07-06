@@ -7,7 +7,7 @@ import { removeCredentials } from '@/utils/credentials';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchEvents } from '@/store/eventSlice';
 import { fetchServices } from '@/store/servicesSlice';
-import { fetchKPIs } from '@/store/kpiSlice';
+// import { fetchKPIs } from '@/store/kpiSlice';
 import { setValidSession, setLoginValue } from '@/store/session';
 import { clear as clearProfile, fetchUser } from '@/store/profileSlice';
 import AdministratorNavigator from './AdministratorNavigator.jsx';
@@ -54,7 +54,7 @@ export default function MainNavigator() {
   useEffect(() => {
     async function validateLandingData() {
       if (currentStore !== 'empty' && currentStore !== undefined) {
-        await dispatch(fetchKPIs(currentStore));
+        // await dispatch(fetchKPIs(currentStore));
         await dispatch(fetchServices(currentStore));
         await dispatch(fetchEvents(currentStore));
       }
@@ -76,7 +76,8 @@ export default function MainNavigator() {
 
   // Use this navigator to render different navigators
   // based on the user being logged in or not
-  if (session && kpiStatus && serviceStatus && eventStatus) {
+  // if (session && kpiStatus && serviceStatus && eventStatus) {
+  if (session && serviceStatus && eventStatus) {
     return <AdministratorNavigator />;
   }
   // Using the same navigator, just as a placeholder

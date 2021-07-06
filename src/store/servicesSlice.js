@@ -14,7 +14,7 @@ export const fetchServices = createAsyncThunk(
         `/v1/operations/stores/${idStore}/service-indicators/`,
         { params: { date: today, size: 8 } },
       );
-      // console.log(response.data);
+      console.log(response.data);
       return response.data;
     } catch (error) {
       return error;
