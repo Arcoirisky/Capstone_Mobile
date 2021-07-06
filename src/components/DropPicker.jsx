@@ -38,7 +38,7 @@ export default function DropPicker() {
       dispatch(fetchNextEvents([pickerStore, 1]));
       setLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pickerStore, dispatch]);
 
   useEffect(() => {

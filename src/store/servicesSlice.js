@@ -3,15 +3,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import CLIENT from '@/api/client';
 import getDates from '@/utils/getDates';
-import round from '@/utils/round';
+import processSI from '@/utils/processSI';
 
 export const fetchServices = createAsyncThunk(
   'services/fetchServices',
   async (idStore) => {
     try {
+      const { today } = getDates();
       const response = await CLIENT.get(
         `/v1/operations/stores/${idStore}/service-indicators/`,
+        { params: { date: today, size: 8 } },
       );
+      // console.log(response.data);
       return response.data;
     } catch (error) {
       return error;
@@ -38,7 +41,15 @@ export const servicesSlice = createSlice({
       state.status = false;
     },
     [fetchServices.fulfilled]: (state, action) => {
-      const data = action.payload;
+      const data = action.payload.results;
+
+      const { mainService, aux } = processSI(data);
+
+      state.mainService = mainService;
+
+      state.storeServices = aux;
+
+      /* const data = action.payload;
       const { today, yesterday, date2, date3, date4, date5, date6, lastWeek } = getDates();
 
       const indicatorT = {};
@@ -177,7 +188,7 @@ export const servicesSlice = createSlice({
 
       state.mainService = mainService;
 
-      state.storeServices = aux;
+      state.storeServices = aux; */
       state.status = true;
     },
   },
