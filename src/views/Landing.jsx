@@ -1,6 +1,7 @@
-/* eslint-disable object-curly-newline */
 import React from 'react';
-import { StatusBar, ScrollView, View, Text } from 'react-native';
+import {
+  StatusBar, ScrollView, View, Text,
+} from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { WhiteSpace } from '@ant-design/react-native';
@@ -17,6 +18,7 @@ export default function Landing() {
 
   const mainService = useSelector((state) => state.services.mainService);
   const lastNEvents = useSelector((state) => state.event.lastNEvents);
+  const stores = useSelector((state) => state.profile.stores);
 
   const kpis = mainKPIs.map((kpi) => (
     <MainKpiCard navigation={navigation} kpi={kpi} key={kpi.id} />
@@ -30,7 +32,7 @@ export default function Landing() {
     <View style={styles.landingView}>
       <StatusBar backgroundColor="#052D4C" />
 
-      <DropPicker />
+      {stores.length === 1 ? null : <DropPicker />}
 
       <ScrollView style={{ flex: 1 }}>
         <WhiteSpace size="sm" />

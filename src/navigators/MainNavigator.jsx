@@ -69,10 +69,6 @@ export default function MainNavigator() {
     validateLandingData();
   }, [dispatch, currentStore]);
 
-  /* removeCredentials();
-  dispatch(setValidSession(false));
-  dispatch(clearProfile()); */
-
   // Return nothing if application is not ready
   if (!applicationReady) {
     return null;
@@ -81,7 +77,6 @@ export default function MainNavigator() {
   // Use this navigator to render different navigators
   // based on the user being logged in or not
   if (session && kpiStatus && serviceStatus && eventStatus) {
-    // if (session && kpiStatus && eventStatus) {
     return <AdministratorNavigator />;
   }
   // Using the same navigator, just as a placeholder

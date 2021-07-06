@@ -18,13 +18,12 @@ function makeIndicator(obj) {
   const bathroom = bathroomGrade(obj);
   const kindness = kindnessGrade(obj);
 
-  const service =
-    experience * 0.125 +
-    waitingTime * 0.175 +
-    speed * 0.175 +
-    quality * 0.175 +
-    bathroom * 0.175 +
-    kindness * 0.175;
+  const service = experience * 0.125
+    + waitingTime * 0.175
+    + speed * 0.175
+    + quality * 0.175
+    + bathroom * 0.175
+    + kindness * 0.175;
 
   const finalObj = {
     experience,
@@ -40,8 +39,9 @@ function makeIndicator(obj) {
 }
 
 export default function processSI(data) {
-  const { today, yesterday, date2, date3, date4, date5, date6, lastWeek } =
-    getDates();
+  const {
+    today, yesterday, date2, date3, date4, date5, date6, lastWeek,
+  } = getDates();
 
   let indicatorT;
   let indicatorY;
@@ -93,8 +93,8 @@ export default function processSI(data) {
     variationYpercentage:
       ((indicatorY.service - indicatorT.service) / indicatorY.service) * 100,
     variationLWpercentage:
-      ((indicatordLW.service - indicatorT.service) / indicatordLW.service) *
-      100,
+      ((indicatordLW.service - indicatorT.service) / indicatordLW.service)
+      * 100,
   };
 
   const serviceNames = [
