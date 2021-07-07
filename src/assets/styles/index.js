@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     fontFamily: 'robotoBold',
     fontSize: 20,
     backgroundColor: '#eaedf5',
+    marginLeft: 18,
   },
   eventsTitle: {
     fontFamily: 'robotoBold',

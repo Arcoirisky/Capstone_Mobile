@@ -10,6 +10,7 @@ import styles from '@/assets/styles/index';
 import MainKpiCard from '@/components/MainKpiCard.jsx';
 import EventCard from '@/components/EventCard.jsx';
 import ServiceCard from '@/components/ServiceCard.jsx';
+import ServiceCardUnclickable from '@/components/ServiceCardUnclickable.jsx';
 import DropPicker from '@/components/DropPicker.jsx';
 
 export default function Landing() {
@@ -17,6 +18,7 @@ export default function Landing() {
   const mainKPIs = useSelector((state) => state.kpi.mainKPIs);
 
   const mainService = useSelector((state) => state.services.mainService);
+  const npsService = useSelector((state) => state.services.npsService);
   const lastNEvents = useSelector((state) => state.event.lastNEvents);
   const stores = useSelector((state) => state.profile.stores);
 
@@ -44,14 +46,15 @@ export default function Landing() {
         </View>
 
         <WhiteSpace size="md" />
-        <View style={styles.serviceView}>
-          <Text style={styles.serviceTitle}>Indicadores de servicio</Text>
+        <Text style={styles.serviceTitle}>Indicadores de servicio</Text>
+        <ScrollView horizontal style={styles.serviceView}>
           <ServiceCard
             navigation={navigation}
             service={mainService}
             key={mainService.name}
           />
-        </View>
+          <ServiceCardUnclickable service={npsService} key={npsService.id} />
+        </ScrollView>
 
         <WhiteSpace size="md" />
         <View style={styles.landingView}>

@@ -6,6 +6,7 @@ import {
   qualityGrade,
   bathroomGrade,
   kindnessGrade,
+  npsGrade,
 } from '@/utils/formulasSI';
 import getDates from '@/utils/getDates';
 import round from '@/utils/round';
@@ -17,6 +18,7 @@ function makeIndicator(obj) {
   const quality = qualityGrade(obj);
   const bathroom = bathroomGrade(obj);
   const kindness = kindnessGrade(obj);
+  const nps = npsGrade(obj);
 
   const service = experience * 0.125
     + waitingTime * 0.175
@@ -33,6 +35,7 @@ function makeIndicator(obj) {
     bathroom,
     kindness,
     service,
+    nps,
   };
 
   return finalObj;
@@ -53,8 +56,6 @@ export default function processSI(data) {
   let indicatordLW;
 
   data.map((obj) => {
-    // const nps = obj.nps / obj.amountNps;
-
     if (obj.date === today) {
       indicatorT = makeIndicator(obj);
     } else if (obj.date === yesterday) {
@@ -95,6 +96,28 @@ export default function processSI(data) {
     variationLWpercentage:
       ((indicatordLW.service - indicatorT.service) / indicatordLW.service)
       * 100,
+  };
+
+  const npsService = {
+    name: 'NPS',
+    id: 'nps',
+    value: round(indicatorT.nps, 2),
+    data: {
+      v1: round(indicatordLW.nps, 2),
+      v2: round(indicatord6.nps, 2),
+      v3: round(indicatord5.nps, 2),
+      v4: round(indicatord4.nps, 2),
+      v5: round(indicatord3.nps, 2),
+      v6: round(indicatord2.nps, 2),
+      v7: round(indicatorY.nps, 2),
+      v8: round(indicatorT.nps, 2),
+    },
+    variationYNumber: indicatorY.nps - indicatorT.nps,
+    variationLWNumber: indicatordLW.nps - indicatorT.nps,
+    variationYpercentage:
+      ((indicatorY.nps - indicatorT.nps) / indicatorY.nps) * 100,
+    variationLWpercentage:
+      ((indicatordLW.nps - indicatorT.nps) / indicatordLW.nps) * 100,
   };
 
   const serviceNames = [
@@ -197,5 +220,5 @@ export default function processSI(data) {
     aux.push(subService);
   });
 
-  return { mainService, aux };
+  return { mainService, aux, npsService };
 }

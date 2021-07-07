@@ -46,3 +46,10 @@ export function kindnessGrade(obj) {
   }
   return obj.kindness / obj.amountKindness;
 }
+
+export function npsGrade(obj) {
+  if (checkNaN(obj.amountNps)) {
+    return 0;
+  }
+  return obj.nps / obj.amountNps;
+}

@@ -56,7 +56,7 @@ export const kpiSlice = createSlice({
     [fetchKPIs.fulfilled]: (state, action) => {
       const data = action.payload;
 
-      const { today, yesterday, lastWeek } = getDates();
+      /* const { today, yesterday, lastWeek } = getDates();
 
       const kpiT = [];
       const kpiY = [];
@@ -74,7 +74,7 @@ export const kpiSlice = createSlice({
       });
 
       state.storeKpis = processStoreKpis(kpiT, kpiY, kpiLW);
-      state.mainKPIs = processMainKpis(kpiT, kpiY, kpiLW);
+      state.mainKPIs = processMainKpis(kpiT, kpiY, kpiLW); */
       state.status = true;
     },
   },

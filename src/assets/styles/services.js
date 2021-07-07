@@ -28,6 +28,7 @@ const servicesStyles = StyleSheet.create({
   // Main service (landing)
   mainServiceCard: {
     justifyContent: 'center',
+    marginRight: 10,
   },
   mainServiceBody: {
     paddingVertical: 0,
