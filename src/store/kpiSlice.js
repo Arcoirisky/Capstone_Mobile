@@ -54,8 +54,8 @@ export const kpiSlice = createSlice({
     [fetchKPIs.pending]: (state) => {
       state.picker = true;
     },
-    [fetchKPIs.fulfilled]: (state, action) => {
-      const data = action.payload;
+    [fetchKPIs.fulfilled]: (state) => {
+      // const data = action.payload;
 
       /* const { today, yesterday, lastWeek } = getDates();
 

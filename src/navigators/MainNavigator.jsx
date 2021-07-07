@@ -37,7 +37,7 @@ export default function MainNavigator() {
   const dispatch = useDispatch();
 
   const currentStore = useSelector((state) => state.profile.currentStore);
-  const kpiStatus = useSelector((state) => state.kpi.status);
+  // const kpiStatus = useSelector((state) => state.kpi.status);
   const serviceStatus = useSelector((state) => state.services.status);
 
   useEffect(() => {
