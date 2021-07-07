@@ -15,6 +15,10 @@ import DropPicker from '@/components/DropPicker.jsx';
 
 export default function Landing() {
   const navigation = useNavigation();
+
+  const servicePicker = useSelector((state) => state.services.picker);
+  const eventPicker = useSelector((state) => state.event.picker);
+  const kpiPicker = useSelector((state) => state.kpi.picker);
   const mainKPIs = useSelector((state) => state.kpi.mainKPIs);
 
   const mainService = useSelector((state) => state.services.mainService);
@@ -33,37 +37,44 @@ export default function Landing() {
   return (
     <View style={styles.landingView}>
       <StatusBar backgroundColor="#052D4C" />
-
       {stores.length === 1 ? null : <DropPicker />}
 
-      <ScrollView style={{ flex: 1 }}>
-        <WhiteSpace size="sm" />
-        <View style={styles.kpiView}>
-          <Text style={styles.kpiTitle}>KPIs</Text>
-          <ScrollView horizontal style={styles.kpiScroll}>
-            <View style={styles.kpiCardsView}>{kpis}</View>
+      {(servicePicker || eventPicker || kpiPicker)
+        ? (
+          <View style={styles.loadingView}>
+            <Text> ... Cargando ... </Text>
+          </View>
+        )
+        : (
+          <ScrollView style={{ flex: 1 }}>
+            <WhiteSpace size="sm" />
+            <View style={styles.kpiView}>
+              <Text style={styles.kpiTitle}>KPIs</Text>
+              <ScrollView horizontal style={styles.kpiScroll}>
+                <View style={styles.kpiCardsView}>{kpis}</View>
+              </ScrollView>
+            </View>
+
+            <WhiteSpace size="md" />
+            <Text style={styles.serviceTitle}>Indicadores de servicio</Text>
+            <ScrollView horizontal style={styles.serviceView}>
+              <ServiceCard
+                navigation={navigation}
+                service={mainService}
+                key={mainService.name}
+              />
+              <ServiceCardUnclickable service={npsService} key={npsService.id} />
+            </ScrollView>
+
+            <WhiteSpace size="md" />
+            <View style={styles.landingView}>
+              <Text style={styles.eventsTitle}>Últimos eventos</Text>
+              <ScrollView>{events}</ScrollView>
+            </View>
+
+            <WhiteSpace size="md" />
           </ScrollView>
-        </View>
-
-        <WhiteSpace size="md" />
-        <Text style={styles.serviceTitle}>Indicadores de servicio</Text>
-        <ScrollView horizontal style={styles.serviceView}>
-          <ServiceCard
-            navigation={navigation}
-            service={mainService}
-            key={mainService.name}
-          />
-          <ServiceCardUnclickable service={npsService} key={npsService.id} />
-        </ScrollView>
-
-        <WhiteSpace size="md" />
-        <View style={styles.landingView}>
-          <Text style={styles.eventsTitle}>Últimos eventos</Text>
-          <ScrollView>{events}</ScrollView>
-        </View>
-
-        <WhiteSpace size="md" />
-      </ScrollView>
+        )}
     </View>
   );
 }

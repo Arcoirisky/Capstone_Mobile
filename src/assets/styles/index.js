@@ -60,6 +60,12 @@ const styles = StyleSheet.create({
   pickerText: {
     fontFamily: 'roboto',
   },
+  // Loading
+  loadingView: {
+    alignItems: 'center',
+    flex: 1,
+    justifyContent: 'center',
+  },
 });
 
 export default styles;

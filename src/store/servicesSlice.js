@@ -27,6 +27,7 @@ export const servicesSlice = createSlice({
     mainService: {},
     npsService: {},
     status: false,
+    picker: false,
   },
   reducers: {
     clear: (state) => {
@@ -38,7 +39,7 @@ export const servicesSlice = createSlice({
   },
   extraReducers: {
     [fetchServices.pending]: (state) => {
-      state.status = false;
+      state.picker = true;
     },
     [fetchServices.fulfilled]: (state, action) => {
       const data = action.payload.results;
@@ -49,6 +50,7 @@ export const servicesSlice = createSlice({
       state.npsService = npsService;
       state.storeServices = aux;
       state.status = true;
+      state.picker = false;
     },
   },
 });

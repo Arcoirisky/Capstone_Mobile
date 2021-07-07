@@ -29,7 +29,6 @@ export default function DropPicker() {
   }, [stores, pickerStore]);
 
   useEffect(() => {
-    setLoading(true);
     if (loading) {
       dispatch(fetchKPIs(pickerStore));
       dispatch(fetchServices(pickerStore));
@@ -44,6 +43,7 @@ export default function DropPicker() {
   useEffect(() => {
     if (value) {
       dispatch(setPickerStore(value));
+      setLoading(true);
     }
   }, [value, dispatch]);
 

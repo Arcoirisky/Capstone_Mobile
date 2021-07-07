@@ -3,7 +3,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import CLIENT from '@/api/client';
 import getDates from '@/utils/getDates';
-import { processStoreKpis, processMainKpis } from '@/utils/processKpis';
+// import { processStoreKpis, processMainKpis } from '@/utils/processKpis';
 
 export const fetchKPIs = createAsyncThunk('kpi/fetchKPIs', async (idStore) => {
   try {
@@ -41,6 +41,7 @@ export const kpiSlice = createSlice({
     storeKpis: {},
     status: false,
     mainKPIs: [],
+    picker: false,
   },
   reducers: {
     clear: (state) => {
@@ -51,7 +52,7 @@ export const kpiSlice = createSlice({
   },
   extraReducers: {
     [fetchKPIs.pending]: (state) => {
-      state.status = false;
+      state.picker = true;
     },
     [fetchKPIs.fulfilled]: (state, action) => {
       const data = action.payload;
@@ -76,6 +77,7 @@ export const kpiSlice = createSlice({
       state.storeKpis = processStoreKpis(kpiT, kpiY, kpiLW);
       state.mainKPIs = processMainKpis(kpiT, kpiY, kpiLW); */
       state.status = true;
+      state.picker = false;
     },
   },
 });

@@ -93,6 +93,7 @@ export const eventSlice = createSlice({
     page: 1,
     totalPages: undefined,
     store: undefined,
+    picker: false,
   },
   reducers: {
     setStore: (state, action) => {
@@ -121,7 +122,7 @@ export const eventSlice = createSlice({
       state.page = 1;
     },
     [fetchEvents.pending]: (state) => {
-      state.status = false;
+      state.picker = true;
     },
     [fetchEvents.fulfilled]: (state, action) => {
       const data = action.payload;
@@ -134,6 +135,7 @@ export const eventSlice = createSlice({
       }
       state.lastNEvents = data.results;
       state.status = true;
+      state.picker = false;
     },
   },
 });
