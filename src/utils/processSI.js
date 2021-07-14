@@ -65,7 +65,7 @@ function makeIndicatorEmpty() {
   const kindness = 0;
   const nps = 0;
 
-  let service = 0;
+  const service = 0;
 
   const finalObj = {
     experience,
