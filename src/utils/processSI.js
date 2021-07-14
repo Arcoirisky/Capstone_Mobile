@@ -108,7 +108,7 @@ export default function processSI(data) {
     days,
   } = getDates();
 
-  let indicatorT = makeIndicatorEmpty();
+  let indicatorT;
   let indicatorY = makeIndicatorEmpty();
   let indicatord2 = makeIndicatorEmpty();
   let indicatord3 = makeIndicatorEmpty();
