@@ -44,6 +44,7 @@ export const alertSlice = createSlice({
     status: false,
     pageAlerts: [],
     page: 1,
+    sizePage: 4,
     totalPages: undefined,
     store: undefined,
     picker: false,
@@ -92,7 +93,7 @@ export const alertSlice = createSlice({
       state.lastNAlerts = aux.splice(0, 4);
       state.pageAlerts = state.storeAlerts;
 
-      state.totalPages = 1;
+      state.totalPages = Math.ceil(state.pageAlerts.length / state.sizePage);
       state.page = 1;
     },
     [fetchAlerts.pending]: (state) => {
@@ -122,7 +123,8 @@ export const alertSlice = createSlice({
       state.lastNAlerts = aux.splice(0, 4);
 
       state.pageAlerts = state.storeAlerts;
-      state.totalPages = 1;
+
+      state.totalPages = Math.ceil(state.pageAlerts.length / state.sizePage);
       state.page = 1;
 
       state.status = true;

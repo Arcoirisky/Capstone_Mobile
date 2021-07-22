@@ -11,7 +11,7 @@ export default function Alerts() {
   const Currentpage = useSelector((state) => state.alert.page);
   const totalPages = useSelector((state) => state.alert.totalPages);
   const pageAlerts = useSelector((state) => state.alert.pageAlerts);
-  const sizePage = 4;
+  const sizePage = useSelector((state) => state.alert.sizePage);
 
   const locale = {
     prevText: '<',
