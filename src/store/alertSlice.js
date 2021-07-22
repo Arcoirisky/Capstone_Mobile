@@ -11,7 +11,6 @@ export const fetchAlerts = createAsyncThunk(
     try {
       const response = await CLIENT.get(
         `/v1/operations/stores/${idStore}/events/`,
-        { params: {} },
       );
       return response.data.results[0].data;
     } catch (error) {
@@ -27,7 +26,6 @@ export const fetchNextAlerts = createAsyncThunk(
       const idStore = input[0];
       const response = await CLIENT.get(
         `/v1/operations/stores/${idStore}/events/`,
-        { params: {} },
       );
       return response.data.results[0].data;
     } catch (error) {
