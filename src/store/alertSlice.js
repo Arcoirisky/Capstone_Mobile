@@ -2,43 +2,18 @@
 /* eslint-disable no-await-in-loop */
 /* eslint no-param-reassign: ["error", { "props": false }] */
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import getDates from '@/utils/getDates';
 import CLIENT from '@/api/client';
 
 export const fetchAlerts = createAsyncThunk(
   'alert/fetchAlerts',
   async (idStore) => {
     try {
-      const sizePag = 4;
       const response = await CLIENT.get(
         `/v1/operations/stores/${idStore}/events/`,
-        { params: { size: sizePag } },
+        { params: {} },
       );
-      const paginationResponse = {};
-
-      paginationResponse[1] = response.data.results;
-
-      let current = response.data.results.length;
-      const total = response.data.count;
-
-      let page = 2;
-
-      while (current !== total) {
-        const nextResponse = await CLIENT.get(
-          `/v1/operations/stores/${idStore}/events/?page=${page}`,
-          { params: { size: sizePag } },
-        );
-
-        paginationResponse[page] = nextResponse.data.results;
-        current += nextResponse.data.results.length;
-        page += 1;
-      }
-
-      const auxResponse = {};
-      auxResponse.results = response.data.results;
-      auxResponse.pagination = paginationResponse;
-      auxResponse.count = total;
-      auxResponse.sizePag = sizePag;
-      return auxResponse;
+      return response.data.results[0].data;
     } catch (error) {
       return error;
     }
@@ -49,35 +24,12 @@ export const fetchNextAlerts = createAsyncThunk(
   'alert/fetchNextAlerts',
   async (input) => {
     try {
-      const sizePag = 4;
       const idStore = input[0];
-      const page = input[1];
       const response = await CLIENT.get(
-        `/v1/operations/stores/${idStore}/events/?page=${page}`,
-        { params: { size: sizePag } },
+        `/v1/operations/stores/${idStore}/events/`,
+        { params: {} },
       );
-      const paginationResponse = {};
-
-      paginationResponse[1] = response.data.results;
-
-      let current = response.data.results.length;
-      const total = response.data.count;
-      let auxPage = 2;
-
-      while (current !== total) {
-        const nextResponse = await CLIENT.get(
-          `/v1/operations/stores/${idStore}/events/?page=${auxPage}`,
-          { params: { size: sizePag } },
-        );
-
-        paginationResponse[auxPage] = nextResponse.data.results;
-        current += nextResponse.data.results.length;
-        auxPage += 1;
-      }
-
-      response.data.sizePag = sizePag;
-      response.data.pagination = paginationResponse;
-      return response.data;
+      return response.data.results[0].data;
     } catch (error) {
       return error;
     }
@@ -102,7 +54,6 @@ export const alertSlice = createSlice({
     },
     incrementByAmount: (state, action) => {
       state.page = action.payload;
-      state.pageAlerts = state.storeAlerts[action.payload];
     },
     clear: (state) => {
       state.storeAlerts = [];
@@ -117,9 +68,31 @@ export const alertSlice = createSlice({
   extraReducers: {
     [fetchNextAlerts.fulfilled]: (state, action) => {
       const data = action.payload;
-      state.storeAlerts = data.pagination;
-      state.pageAlerts = data.pagination[1];
-      state.totalPages = Math.ceil(data.count / data.sizePag);
+      const { today } = getDates();
+      const date = today.replace('-', '').replace('-', '');
+      const aux = [];
+      state.lastNAlerts = [];
+      state.pageAlerts = [];
+      state.storeAlerts = [];
+
+      Object.keys(data[date]).forEach((key) => {
+        const value = data[date][key];
+        const object = {
+          data: {
+            date: today,
+            event: value,
+          },
+          id: key,
+          store: action.meta.arg[0],
+        };
+        aux.push(object);
+        state.storeAlerts.push(object);
+      });
+
+      state.lastNAlerts = aux.splice(0, 4);
+      state.pageAlerts = state.storeAlerts;
+
+      state.totalPages = 1;
       state.page = 1;
     },
     [fetchAlerts.pending]: (state) => {
@@ -127,13 +100,31 @@ export const alertSlice = createSlice({
     },
     [fetchAlerts.fulfilled]: (state, action) => {
       const data = action.payload;
-      if (state.pageAlerts.length === 0) {
-        state.totalPages = Math.ceil(data.count / data.sizePag);
-        state.storeAlerts = data.pagination;
-        state.pageAlerts = data.pagination[1];
-        state.store = action.meta.arg;
-      }
-      state.lastNAlerts = data.results;
+      const { today } = getDates();
+      const date = today.replace('-', '').replace('-', '');
+
+      const aux = [];
+
+      Object.keys(data[date]).forEach((key) => {
+        const value = data[date][key];
+        const object = {
+          data: {
+            date: today,
+            event: value,
+          },
+          id: key,
+          store: action.meta.arg,
+        };
+        aux.push(object);
+        state.storeAlerts.push(object);
+      });
+
+      state.lastNAlerts = aux.splice(0, 4);
+
+      state.pageAlerts = state.storeAlerts;
+      state.totalPages = 1;
+      state.page = 1;
+
       state.status = true;
       state.picker = false;
     },
